@@ -1,4 +1,5 @@
 import { check, validationResult } from "express-validator";
+import { responseHandler } from "./index";
 
 const createValidationFor = route => {
   switch (route) {
@@ -20,7 +21,7 @@ const createValidationFor = route => {
 const myValidationResult = validationResult.withDefaults({
   formatter: error => {
     return {
-      message: error.msg
+      errorMessage: error.msg
     };
   }
 });
@@ -30,8 +31,10 @@ const checkValidationResult = (req, res, next) => {
   if (result.isEmpty()) {
     return next();
   }
-
-  res.status(422).json({ errors: result.array() });
+  responseHandler(res, 422, {
+    status: "error",
+    message: result.array()
+  });
 };
 
 export { createValidationFor, checkValidationResult };
