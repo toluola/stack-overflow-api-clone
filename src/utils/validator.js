@@ -20,6 +20,12 @@ const createValidationFor = route => {
           min: 7
         })
       ];
+    case "question":
+      return [
+        check("body", "The question body should not be empty")
+          .not()
+          .isEmpty()
+      ];
     default:
       return [];
   }
