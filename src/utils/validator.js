@@ -13,7 +13,13 @@ const createValidationFor = route => {
           min: 7
         })
       ];
-
+    case "login":
+      return [
+        check("email", "Please enter a valid email").isEmail(),
+        check("password", "Please enter a valid password").isLength({
+          min: 7
+        })
+      ];
     default:
       return [];
   }
