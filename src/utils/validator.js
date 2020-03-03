@@ -26,6 +26,12 @@ const createValidationFor = route => {
           .not()
           .isEmpty()
       ];
+    case "answer":
+      return [
+        check("body", "The answer body should not be empty")
+          .not()
+          .isEmpty()
+      ];
     default:
       return [];
   }

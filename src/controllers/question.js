@@ -39,11 +39,11 @@ const askQuestion = async (req, res) => {
 
 const viewQuestions = async (req, res) => {
   try {
-    const getQuestions = await Question.find();
+    const getQuestions = await Question.find().populate("answers");
     if (getQuestions) {
       responseHandler(res, 200, {
         status: "success",
-        message: "Question fetched successfully",
+        message: "Questions fetched successfully",
         data: getQuestions
       });
     }
@@ -55,4 +55,23 @@ const viewQuestions = async (req, res) => {
   }
 };
 
-export { askQuestion, viewQuestions };
+const viewSingleQuestion = async (req, res) => {
+  try {
+    const { questionId } = req.params;
+    const getQuestion = await Question.findById(questionId).populate("answers");
+    if (getQuestion) {
+      responseHandler(res, 200, {
+        status: "success",
+        message: "Question fetched successfully",
+        data: getQuestion
+      });
+    }
+  } catch (err) {
+    responseHandler(res, 500, {
+      status: "error",
+      message: [{ errorMessage: "Server Error. Please Try Again" }]
+    });
+  }
+};
+
+export { askQuestion, viewQuestions, viewSingleQuestion };

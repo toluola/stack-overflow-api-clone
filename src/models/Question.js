@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 /**
  * @name questionSchema
  * @param {DataTypes} DataTypes
- * @returns {Model} Returns user model
+ * @returns {Model} Returns question model
  */
 
 const questionSchema = mongoose.Schema(
