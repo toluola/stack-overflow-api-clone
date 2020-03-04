@@ -4,7 +4,8 @@ import { createUser, loginUser } from "../controllers/user";
 import {
   askQuestion,
   viewQuestions,
-  viewSingleQuestion
+  viewSingleQuestion,
+  voteQuestion
 } from "../controllers/question";
 import { postAnswer } from "../controllers/answer";
 import auth from "../middlewares/auth";
@@ -98,11 +99,29 @@ router.get("/questions/:questionId", viewSingleQuestion);
  */
 
 router.post(
-  "/:questionId/answer",
+  "/questions/:questionId/answer",
   auth,
   createValidationFor("answer"),
   checkValidationResult,
   postAnswer
+);
+
+/**
+ * Resource handling voting a question
+ * @name router:/question/vote
+ * @function
+ * @memberof module:Express.Router
+ * @inner
+ * @param {function} voteQuestion - Express path
+ * @returns Response Object
+ */
+
+router.post(
+  "/questions/:questionId/vote",
+  auth,
+  createValidationFor("vote"),
+  checkValidationResult,
+  voteQuestion
 );
 
 export default router;

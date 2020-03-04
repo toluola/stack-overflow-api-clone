@@ -12,6 +12,10 @@ const questionSchema = mongoose.Schema(
       type: String,
       required: true
     },
+    upvoteCount: { type: Number, default: 0 },
+    downvoteCount: { type: Number, default: 0 },
+    upvoterIds: { type: [String] },
+    downvoterIds: { type: [String] },
     answers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Answer" }]
   },
   {

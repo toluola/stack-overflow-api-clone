@@ -1,4 +1,4 @@
-import { check, validationResult } from "express-validator";
+import { check, validationResult, oneOf } from "express-validator";
 import { responseHandler } from "./index";
 
 const createValidationFor = route => {
@@ -31,6 +31,14 @@ const createValidationFor = route => {
         check("body", "The answer body should not be empty")
           .not()
           .isEmpty()
+      ];
+    case "vote":
+      const message = 'Invalid Vote: can be either  be "up" or "down"';
+      return [
+        oneOf(
+          [check("voteType").equals("up"), check("voteType").equals("down")],
+          message
+        )
       ];
     default:
       return [];
