@@ -14,7 +14,8 @@ const postAnswer = async (req, res) => {
   try {
     const { body } = req.body;
     const { questionId } = req.params;
-    const answer = new Answer({ body, questionId });
+    const { _id: userId } = req.user;
+    const answer = new Answer({ body, questionId, userId });
     await answer.save();
     const getQuestion = await Question.findById(questionId);
     getQuestion.answers.push(answer);

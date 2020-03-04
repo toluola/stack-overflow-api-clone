@@ -12,7 +12,8 @@ const answerSchema = mongoose.Schema(
       type: String,
       required: true
     },
-    questionId: { type: mongoose.Schema.Types.ObjectId, ref: "Question" }
+    questionId: { type: mongoose.Schema.Types.ObjectId, ref: "Question" },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
   },
   {
     timestamps: true

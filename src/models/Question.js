@@ -8,6 +8,10 @@ const mongoose = require("mongoose");
 
 const questionSchema = mongoose.Schema(
   {
+    title: {
+      type: String,
+      required: true
+    },
     body: {
       type: String,
       required: true
@@ -16,7 +20,8 @@ const questionSchema = mongoose.Schema(
     downvoteCount: { type: Number, default: 0 },
     upvoterIds: { type: [String] },
     downvoterIds: { type: [String] },
-    answers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Answer" }]
+    answers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Answer" }],
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
   },
   {
     timestamps: true
