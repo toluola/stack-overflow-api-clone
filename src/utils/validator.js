@@ -24,6 +24,9 @@ const createValidationFor = route => {
       return [
         check("body", "The question body should not be empty")
           .not()
+          .isEmpty(),
+        check("title", "The title body should not be empty")
+          .not()
           .isEmpty()
       ];
     case "answer":

@@ -11,8 +11,9 @@ import { responseHandler } from "../utils";
 
 const askQuestion = async (req, res) => {
   try {
-    const { body } = req.body;
-    const question = new Question({ body });
+    const { body, title } = req.body;
+    const { _id: userId } = req.user;
+    const question = new Question({ body, title, userId });
     await question.save();
     if (question) {
       responseHandler(res, 201, {
