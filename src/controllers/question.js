@@ -74,4 +74,125 @@ const viewSingleQuestion = async (req, res) => {
   }
 };
 
-export { askQuestion, viewQuestions, viewSingleQuestion };
+const voteQuestion = async (req, res) => {
+  const { voteType } = req.body;
+  const { questionId } = req.params;
+  const { _id: userId } = req.user;
+  const findQuestion = await Question.findById(questionId);
+  const upvoteInitialLength = findQuestion.upvoterIds.length;
+  const downvoteInitialLength = findQuestion.downvoterIds.length;
+
+  if (voteType === "up") {
+    await Question.updateOne(
+      { _id: questionId },
+      {
+        $addToSet: {
+          upvoterIds: userId
+        }
+      }
+    );
+    const findQuestionStatus = await Question.findById(questionId);
+    if (findQuestionStatus.upvoterIds.length === upvoteInitialLength) {
+      await Question.updateOne(
+        { _id: questionId },
+        {
+          $pull: {
+            upvoterIds: userId
+          }
+        }
+      );
+      await Question.updateOne(
+        { _id: questionId },
+        {
+          $inc: {
+            upvoteCount: -1
+          }
+        }
+      );
+      responseHandler(res, 200, {
+        status: "success",
+        message: "Upvote Successfully removed"
+      });
+    } else {
+      await Question.updateOne(
+        { _id: questionId },
+        {
+          $addToSet: {
+            upvoterIds: userId
+          }
+        }
+      );
+
+      await Question.updateOne(
+        { _id: questionId },
+        {
+          $inc: {
+            upvoteCount: 1
+          }
+        }
+      );
+      responseHandler(res, 200, {
+        status: "success",
+        message: "Upvote Successfull"
+      });
+    }
+  }
+
+  if (voteType === "down") {
+    await Question.updateOne(
+      { _id: questionId },
+      {
+        $addToSet: {
+          downvoterIds: userId
+        }
+      }
+    );
+    const findQuestionStatus = await Question.findById(questionId);
+    if (findQuestionStatus.downvoterIds.length === downvoteInitialLength) {
+      await Question.updateOne(
+        { _id: questionId },
+        {
+          $pull: {
+            downvoterIds: userId
+          }
+        }
+      );
+      await Question.updateOne(
+        { _id: questionId },
+        {
+          $inc: {
+            downvoteCount: -1
+          }
+        }
+      );
+      responseHandler(res, 200, {
+        status: "success",
+        message: "Downvote Successfully removed"
+      });
+    } else {
+      await Question.updateOne(
+        { _id: questionId },
+        {
+          $addToSet: {
+            downvoterIds: userId
+          }
+        }
+      );
+
+      await Question.updateOne(
+        { _id: questionId },
+        {
+          $inc: {
+            downvoteCount: 1
+          }
+        }
+      );
+      responseHandler(res, 200, {
+        status: "success",
+        message: "Downvote Successfull"
+      });
+    }
+  }
+};
+
+export { askQuestion, viewQuestions, viewSingleQuestion, voteQuestion };
