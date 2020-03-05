@@ -10,7 +10,8 @@ const questionSchema = mongoose.Schema(
   {
     title: {
       type: String,
-      required: true
+      required: true,
+      index: true
     },
     body: {
       type: String,
@@ -29,5 +30,10 @@ const questionSchema = mongoose.Schema(
 );
 
 const Question = mongoose.model("Question", questionSchema);
+
+Question.ensureIndexes(function(err) {
+  if (err) console.log(err);
+  else console.log("create question index successfully");
+});
 
 module.exports = Question;

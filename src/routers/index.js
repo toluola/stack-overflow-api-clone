@@ -8,6 +8,7 @@ import {
   voteQuestion
 } from "../controllers/question";
 import { postAnswer } from "../controllers/answer";
+import { searchAll } from "../controllers/search";
 import auth from "../middlewares/auth";
 
 const router = Router();
@@ -47,6 +48,22 @@ router.post(
 );
 
 /**
+ * Resource handling searching
+ * @name router:/search
+ * @function
+ * @memberof module:Express.Router
+ * @inner
+ * @param {function} searchAll - Express path
+ * @returns Response Object
+ */
+router.get(
+  "/search",
+  createValidationFor("search"),
+  checkValidationResult,
+  searchAll
+);
+
+/**
  * Resource handling asking a question
  * @name router:/question
  * @function
@@ -82,7 +99,7 @@ router.get("/questions", viewQuestions);
  * @function
  * @memberof module:Express.Router
  * @inner
- * @param {function} viewQuestions - Express path
+ * @param {function} viewSingleQuestion - Express path
  * @returns Response Object
  */
 
