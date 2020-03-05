@@ -22,6 +22,10 @@ const userSchema = mongoose.Schema(
       unique: true,
       lowercase: true
     },
+    subscribed: {
+      type: Boolean,
+      default: false
+    },
     password: {
       type: String,
       required: true,
