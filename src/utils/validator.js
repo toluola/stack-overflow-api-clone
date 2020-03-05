@@ -1,4 +1,4 @@
-import { check, validationResult, oneOf } from "express-validator";
+import { check, validationResult, oneOf, query } from "express-validator";
 import { responseHandler } from "./index";
 
 const createValidationFor = route => {
@@ -41,6 +41,25 @@ const createValidationFor = route => {
         oneOf(
           [check("voteType").equals("up"), check("voteType").equals("down")],
           message
+        )
+      ];
+    case "search":
+      const searchMessage =
+        'Invalid search params: can be either  be "question" or "name" or "answer"';
+      return [
+        oneOf(
+          [
+            query("name")
+              .not()
+              .isEmpty(),
+            query("question")
+              .not()
+              .isEmpty(),
+            query("answer")
+              .not()
+              .isEmpty()
+          ],
+          searchMessage
         )
       ];
     default:

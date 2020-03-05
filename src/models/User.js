@@ -13,7 +13,8 @@ const userSchema = mongoose.Schema(
     name: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
+      index: true
     },
     email: {
       type: String,
@@ -62,5 +63,10 @@ userSchema.statics.comparePassword = (password, hashPassword) =>
 userSchema.statics.findUser = email => User.findOne({ email });
 
 const User = mongoose.model("User", userSchema);
+
+User.ensureIndexes(function(err) {
+  if (err) console.log(err);
+  else console.log("create profile index successfully");
+});
 
 module.exports = User;

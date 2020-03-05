@@ -56,6 +56,14 @@ const viewQuestions = async (req, res) => {
   }
 };
 
+/**
+ * @name viewSingleQuestion
+ * @description This is the method for fetching a single question
+ * @param {object} req The request object
+ * @param {object} res The response object
+ * @returns {object} Returns an object of a fetched question
+ */
+
 const viewSingleQuestion = async (req, res) => {
   try {
     const { questionId } = req.params;
@@ -75,6 +83,14 @@ const viewSingleQuestion = async (req, res) => {
   }
 };
 
+/**
+ * @name voteQuestions
+ * @description This is the method for voting on a question
+ * @param {object} req The request object
+ * @param {object} res The response object
+ * @returns {object} Returns status of the vote on the question
+ */
+
 const voteQuestion = async (req, res) => {
   const { voteType } = req.body;
   const { questionId } = req.params;
@@ -82,39 +98,8 @@ const voteQuestion = async (req, res) => {
   const findQuestion = await Question.findById(questionId);
   const upvoteInitialLength = findQuestion.upvoterIds.length;
   const downvoteInitialLength = findQuestion.downvoterIds.length;
-
-  if (voteType === "up") {
-    await Question.updateOne(
-      { _id: questionId },
-      {
-        $addToSet: {
-          upvoterIds: userId
-        }
-      }
-    );
-    const findQuestionStatus = await Question.findById(questionId);
-    if (findQuestionStatus.upvoterIds.length === upvoteInitialLength) {
-      await Question.updateOne(
-        { _id: questionId },
-        {
-          $pull: {
-            upvoterIds: userId
-          }
-        }
-      );
-      await Question.updateOne(
-        { _id: questionId },
-        {
-          $inc: {
-            upvoteCount: -1
-          }
-        }
-      );
-      responseHandler(res, 200, {
-        status: "success",
-        message: "Upvote Successfully removed"
-      });
-    } else {
+  try {
+    if (voteType === "up") {
       await Question.updateOne(
         { _id: questionId },
         {
@@ -123,54 +108,54 @@ const voteQuestion = async (req, res) => {
           }
         }
       );
-
-      await Question.updateOne(
-        { _id: questionId },
-        {
-          $inc: {
-            upvoteCount: 1
+      const findQuestionStatus = await Question.findById(questionId);
+      if (findQuestionStatus.upvoterIds.length === upvoteInitialLength) {
+        await Question.updateOne(
+          { _id: questionId },
+          {
+            $pull: {
+              upvoterIds: userId
+            }
           }
-        }
-      );
-      responseHandler(res, 200, {
-        status: "success",
-        message: "Upvote Successfull"
-      });
-    }
-  }
+        );
+        await Question.updateOne(
+          { _id: questionId },
+          {
+            $inc: {
+              upvoteCount: -1
+            }
+          }
+        );
+        responseHandler(res, 200, {
+          status: "success",
+          message: "Upvote Successfully removed"
+        });
+      } else {
+        await Question.updateOne(
+          { _id: questionId },
+          {
+            $addToSet: {
+              upvoterIds: userId
+            }
+          }
+        );
 
-  if (voteType === "down") {
-    await Question.updateOne(
-      { _id: questionId },
-      {
-        $addToSet: {
-          downvoterIds: userId
-        }
+        await Question.updateOne(
+          { _id: questionId },
+          {
+            $inc: {
+              upvoteCount: 1
+            }
+          }
+        );
+        responseHandler(res, 200, {
+          status: "success",
+          message: "Upvote Successfull"
+        });
       }
-    );
-    const findQuestionStatus = await Question.findById(questionId);
-    if (findQuestionStatus.downvoterIds.length === downvoteInitialLength) {
-      await Question.updateOne(
-        { _id: questionId },
-        {
-          $pull: {
-            downvoterIds: userId
-          }
-        }
-      );
-      await Question.updateOne(
-        { _id: questionId },
-        {
-          $inc: {
-            downvoteCount: -1
-          }
-        }
-      );
-      responseHandler(res, 200, {
-        status: "success",
-        message: "Downvote Successfully removed"
-      });
-    } else {
+    }
+
+    if (voteType === "down") {
       await Question.updateOne(
         { _id: questionId },
         {
@@ -179,20 +164,57 @@ const voteQuestion = async (req, res) => {
           }
         }
       );
-
-      await Question.updateOne(
-        { _id: questionId },
-        {
-          $inc: {
-            downvoteCount: 1
+      const findQuestionStatus = await Question.findById(questionId);
+      if (findQuestionStatus.downvoterIds.length === downvoteInitialLength) {
+        await Question.updateOne(
+          { _id: questionId },
+          {
+            $pull: {
+              downvoterIds: userId
+            }
           }
-        }
-      );
-      responseHandler(res, 200, {
-        status: "success",
-        message: "Downvote Successfull"
-      });
+        );
+        await Question.updateOne(
+          { _id: questionId },
+          {
+            $inc: {
+              downvoteCount: -1
+            }
+          }
+        );
+        responseHandler(res, 200, {
+          status: "success",
+          message: "Downvote Successfully removed"
+        });
+      } else {
+        await Question.updateOne(
+          { _id: questionId },
+          {
+            $addToSet: {
+              downvoterIds: userId
+            }
+          }
+        );
+
+        await Question.updateOne(
+          { _id: questionId },
+          {
+            $inc: {
+              downvoteCount: 1
+            }
+          }
+        );
+        responseHandler(res, 200, {
+          status: "success",
+          message: "Downvote Successfull"
+        });
+      }
     }
+  } catch {
+    responseHandler(res, 500, {
+      status: "error",
+      message: [{ errorMessage: "Server Error. Please Try Again" }]
+    });
   }
 };
 
