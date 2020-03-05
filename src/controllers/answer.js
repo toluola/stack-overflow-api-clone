@@ -1,6 +1,8 @@
 import Answer from "../models/Answer";
 import Question from "../models/Question";
+import User from "../models/User";
 import { responseHandler } from "../utils";
+import { notify, saveNotifications } from "../utils/notifyUser";
 
 /**
  * @name postAnswer
@@ -14,12 +16,20 @@ const postAnswer = async (req, res) => {
   try {
     const { body } = req.body;
     const { questionId } = req.params;
-    const { _id: userId } = req.user;
+    const { _id: userId, name } = req.user;
     const answer = new Answer({ body, questionId, userId });
     await answer.save();
     const getQuestion = await Question.findById(questionId);
     getQuestion.answers.push(answer);
     await getQuestion.save();
+    const getUser = await User.findById(getQuestion.userId);
+    if (getUser.subscribed) {
+      await saveNotifications(answer, {
+        message: `${name} just answered a question`
+      });
+      await notify(getUser._id, "question-answered", answer);
+    }
+
     responseHandler(res, 201, {
       status: "success",
       message: "Answer posted successfully",
