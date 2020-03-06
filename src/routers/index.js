@@ -13,6 +13,12 @@ import auth from "../middlewares/auth";
 
 const router = Router();
 
+router.get("/", (req, res) => {
+  res.status(200).json({
+    message: "welcome to the base URL"
+  });
+});
+
 /**
  * Resource handling user signup
  * @name router:/signup
@@ -24,7 +30,7 @@ const router = Router();
  */
 
 router.post(
-  "auth/signup",
+  "/auth/signup",
   createValidationFor("signup"),
   checkValidationResult,
   createUser
@@ -41,7 +47,7 @@ router.post(
  */
 
 router.post(
-  "auth/login",
+  "/auth/login",
   createValidationFor("login"),
   checkValidationResult,
   loginUser
