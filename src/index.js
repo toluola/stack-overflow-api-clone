@@ -2,9 +2,12 @@ import http from "http";
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import dotenv from "dotenv";
 import routers from "./routers";
 import { io, options } from "./utils/notificationSetup";
 import "./db/db";
+
+dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
