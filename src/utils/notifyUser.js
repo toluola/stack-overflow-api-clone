@@ -1,5 +1,4 @@
 import { io } from "../utils/notificationSetup";
-import Notification from "../models/Notification";
 
 /**
  * @name clearNotifications
