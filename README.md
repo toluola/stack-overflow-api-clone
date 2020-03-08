@@ -28,8 +28,8 @@ https://stack-overflow-clone-api.herokuapp.com/api/v1
 | GET       | /questions               | Get all questions entries    |
 | GET       | /questions/:questionId   | Get specific question entry  |
 | POST      | /question                | Create a new question entry  |
-| POST      | /questions/questionId/answer | Answer to a specific question |
-| POST      | /questions/questionId/vote   | Upvote or downvote a question |
+| POST      | /questions/:questionId/answer | Answer to a specific question |
+| POST      | /questions/:questionId/vote   | Upvote or downvote a question |
 | GET       | /search?searchQuery      | Search questions, answers, profiles|
 | POST      | /auth/login              | Login into the application |
 | POST      | /auth/signup             | Signup on the application     |
