@@ -25,6 +25,12 @@ app.use(cors());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/v1", routers);
 
+app.use("/*", (req, res) => {
+  res.status(422).json({
+    message: "Invalid route"
+  });
+});
+
 httpServer.listen(PORT, () => console.log(`Running on localhost:${PORT}`));
 
 export default app;

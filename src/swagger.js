@@ -25,12 +25,12 @@ export const swaggerDocument = {
   },
   servers: [
     {
-      url: "http://localhost:3000/api/v1",
-      description: "DEV Env"
-    },
-    {
       url: "https://stack-overflow-clone-api.herokuapp.com/api/v1",
       description: "UAT Env"
+    },
+    {
+      url: "http://localhost:3000/api/v1",
+      description: "DEV Env"
     }
   ],
   components: {
