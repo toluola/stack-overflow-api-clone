@@ -1,6 +1,6 @@
 export const baseURL = {
   tags: ["baseURl"],
-  description: "Returns all questions",
+  description: "The base URL",
   operationId: "getQuestions",
   responses: {
     "200": {
@@ -146,7 +146,7 @@ export const askQuestions = {
 
 export const viewSingleQuestion = {
   tags: ["/questions"],
-  description: "Ask a single question",
+  description: "Get a single question",
   operationId: "user",
   parameters: [
     {
@@ -386,6 +386,37 @@ export const search = {
           }
         }
       }
+    },
+    "404": {
+      description: "Error",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "string",
+                description: "shows an error status",
+                example: "error"
+              },
+              message: {
+                type: "array",
+                description: "shows an array of errors",
+                items: {
+                  type: "object",
+                  properties: {
+                    errorMessage: {
+                      type: "string",
+                      description: "shows the error messages",
+                      example: "An error occur"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 };
@@ -555,7 +586,52 @@ export const voteQuestions = {
       description: "Success",
       content: {
         "application/json": {
-          schema: {}
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "string",
+                description: "shows the status of the request",
+                example: "success"
+              },
+              message: {
+                type: "string",
+                description: "shows the vote message",
+                example: "You have successfully voted on this question"
+              }
+            }
+          }
+        }
+      }
+    },
+    "500": {
+      description: "Error",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: "string",
+                description: "shows an error status",
+                example: "error"
+              },
+              message: {
+                type: "array",
+                description: "shows an array of errors",
+                items: {
+                  type: "object",
+                  properties: {
+                    errorMessage: {
+                      type: "string",
+                      description: "shows the error messages",
+                      example: "An error occur"
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
