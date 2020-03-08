@@ -6,7 +6,7 @@ import swaggerUi from "swagger-ui-express";
 import dotenv from "dotenv";
 import routers from "./routers";
 import { io, options } from "./utils/notificationSetup";
-import { swaggerDocument } from "../swagger";
+import { swaggerDocument } from "./swagger";
 import "./db/db";
 
 dotenv.config();
