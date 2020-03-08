@@ -6,6 +6,13 @@ Built with NodeJS and MongoDB
 
 This project consist of several API's that enables users to ask questions get answers to their questions and vote and downvote on questions.
 
+
+## Set up
+
+* Clone this repo
+* Run `npm install`
+* Run `npm run dev`
+
 ## Documentation Link
 
 https://stack-overflow-clone-api.herokuapp.com/api-docs/
