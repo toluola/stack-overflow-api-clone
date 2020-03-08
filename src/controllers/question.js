@@ -1,5 +1,10 @@
 import Question from "../models/Question";
-import { responseHandler, formatResponse } from "../utils";
+import {
+  responseHandler,
+  addToSetQuestion,
+  pullQuestion,
+  vote
+} from "../utils";
 
 /**
  * @name askQuestion
@@ -133,54 +138,19 @@ const voteQuestion = async (req, res) => {
   const downvoteInitialLength = findQuestion.downvoterIds.length;
   try {
     if (voteType === "up") {
-      await Question.updateOne(
-        { _id: questionId },
-        {
-          $addToSet: {
-            upvoterIds: userId
-          }
-        }
-      );
+      await addToSetQuestion(questionId, userId, "up");
       const findQuestionStatus = await Question.findById(questionId);
       if (findQuestionStatus.upvoterIds.length === upvoteInitialLength) {
-        await Question.updateOne(
-          { _id: questionId },
-          {
-            $pull: {
-              upvoterIds: userId
-            }
-          }
-        );
-        await Question.updateOne(
-          { _id: questionId },
-          {
-            $inc: {
-              upvoteCount: -1
-            }
-          }
-        );
+        await pullQuestion(questionId, userId, "up");
+        await vote(questionId, -1, "up");
         responseHandler(res, 200, {
           status: "success",
           message: "Upvote Successfully removed"
         });
       } else {
-        await Question.updateOne(
-          { _id: questionId },
-          {
-            $addToSet: {
-              upvoterIds: userId
-            }
-          }
-        );
+        await addToSetQuestion(questionId, userId, "up");
+        await vote(questionId, 1, "up");
 
-        await Question.updateOne(
-          { _id: questionId },
-          {
-            $inc: {
-              upvoteCount: 1
-            }
-          }
-        );
         responseHandler(res, 200, {
           status: "success",
           message: "Upvote Successfull"
@@ -189,54 +159,21 @@ const voteQuestion = async (req, res) => {
     }
 
     if (voteType === "down") {
-      await Question.updateOne(
-        { _id: questionId },
-        {
-          $addToSet: {
-            downvoterIds: userId
-          }
-        }
-      );
+      await addToSetQuestion(questionId, userId, "down");
+
       const findQuestionStatus = await Question.findById(questionId);
       if (findQuestionStatus.downvoterIds.length === downvoteInitialLength) {
-        await Question.updateOne(
-          { _id: questionId },
-          {
-            $pull: {
-              downvoterIds: userId
-            }
-          }
-        );
-        await Question.updateOne(
-          { _id: questionId },
-          {
-            $inc: {
-              downvoteCount: -1
-            }
-          }
-        );
+        await pullQuestion(questionId, userId, "down");
+        await vote(questionId, -1, "down");
+
         responseHandler(res, 200, {
           status: "success",
           message: "Downvote Successfully removed"
         });
       } else {
-        await Question.updateOne(
-          { _id: questionId },
-          {
-            $addToSet: {
-              downvoterIds: userId
-            }
-          }
-        );
+        await addToSetQuestion(questionId, userId, "down");
+        await vote(questionId, 1, "down");
 
-        await Question.updateOne(
-          { _id: questionId },
-          {
-            $inc: {
-              downvoteCount: 1
-            }
-          }
-        );
         responseHandler(res, 200, {
           status: "success",
           message: "Downvote Successfull"

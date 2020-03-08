@@ -16,7 +16,7 @@ export const swaggerDocument = {
     version: "1.0.0",
     title: "Stack-Overflow-Clone APIs Document",
     description:
-      "This API's enables users to perform some basic CRUD operations on questions and other endpoints",
+      "Welcome to stack overflow API's clone documentation. Feel free to explore",
     contact: {
       name: "Tolu' Olaniyan",
       email: "toluola7@gmail.com",

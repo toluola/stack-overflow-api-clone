@@ -23,10 +23,7 @@ const postAnswer = async (req, res) => {
     getQuestion.answers.push(answer);
     await getQuestion.save();
     const getUser = await User.findById(getQuestion.userId);
-    if (getUser.subscribed) {
-      await saveNotifications(answer, {
-        message: `${name} just answered a question`
-      });
+    if (getUser.subscribed === true) {
       await notify(getUser._id, "question-answered", answer);
     }
 

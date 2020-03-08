@@ -25,18 +25,3 @@ export const notify = async (id, eventName, payload) => {
     consle.log(err);
   }
 };
-
-export const saveNotifications = async (payload, meta) => {
-  try {
-    const { userId, _id: answerId, questionId } = payload;
-    const { message } = meta;
-    const notification = await new Notification({
-      userId,
-      questionId,
-      message,
-      answerId
-    });
-  } catch (error) {
-    throw new Error("Notification save failed.");
-  }
-};
