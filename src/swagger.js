@@ -52,9 +52,6 @@ export const swaggerDocument = {
     "/auth/login": {
       post: loginUser
     },
-    "/questions": {
-      get: getQuestions
-    },
     "/question": {
       post: askQuestions
     },
@@ -66,6 +63,9 @@ export const swaggerDocument = {
     },
     "/questions/{questionId}/vote": {
       post: voteQuestions
+    },
+    "/questions": {
+      get: getQuestions
     },
     "/search": {
       get: search
