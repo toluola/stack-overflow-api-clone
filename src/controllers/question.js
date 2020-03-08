@@ -1,5 +1,5 @@
 import Question from "../models/Question";
-import { responseHandler } from "../utils";
+import { responseHandler, formatResponse } from "../utils";
 
 /**
  * @name askQuestion
@@ -11,15 +11,22 @@ import { responseHandler } from "../utils";
 
 const askQuestion = async (req, res) => {
   try {
-    const { body, title } = req.body;
+    const { body: reqBody, title: reqTitle } = req.body;
     const { _id: userId } = req.user;
-    const question = new Question({ body, title, userId });
+    const question = new Question({ body: reqBody, title: reqTitle, userId });
     await question.save();
+    const { _id, body, title, userId: authorId, createdAt } = question;
     if (question) {
       responseHandler(res, 201, {
         status: "success",
         message: "Question created successfully",
-        data: question
+        data: {
+          _id,
+          body,
+          title,
+          authorId,
+          createdAt
+        }
       });
     }
   } catch (err) {
@@ -41,13 +48,22 @@ const askQuestion = async (req, res) => {
 const viewQuestions = async (req, res) => {
   try {
     const getQuestions = await Question.find().populate("answers");
-    if (getQuestions) {
-      responseHandler(res, 200, {
+    if (getQuestions.length > 0) {
+      return responseHandler(res, 200, {
         status: "success",
         message: "Questions fetched successfully",
         data: getQuestions
       });
     }
+    responseHandler(res, 404, {
+      status: "error",
+      message: [
+        {
+          errorMessage:
+            "There are no questions in the database. You can ask a question."
+        }
+      ]
+    });
   } catch (err) {
     responseHandler(res, 500, {
       status: "error",
@@ -68,17 +84,34 @@ const viewSingleQuestion = async (req, res) => {
   try {
     const { questionId } = req.params;
     const getQuestion = await Question.findById(questionId).populate("answers");
-    if (getQuestion) {
-      responseHandler(res, 200, {
-        status: "success",
-        message: "Question fetched successfully",
-        data: getQuestion
-      });
-    }
+    const {
+      _id,
+      body,
+      title,
+      userId: authorId,
+      answers,
+      upvoteCount,
+      downvoteCount,
+      createdAt
+    } = getQuestion;
+    responseHandler(res, 200, {
+      status: "success",
+      message: "Question fetched successfully",
+      data: {
+        _id,
+        body,
+        title,
+        userId: authorId,
+        upvoteCount,
+        downvoteCount,
+        answers,
+        createdAt
+      }
+    });
   } catch (err) {
-    responseHandler(res, 500, {
+    responseHandler(res, 404, {
       status: "error",
-      message: [{ errorMessage: "Server Error. Please Try Again" }]
+      message: [{ errorMessage: "No question found" }]
     });
   }
 };

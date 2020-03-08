@@ -11,8 +11,8 @@ import { responseHandler } from "../utils";
 
 const createUser = async (req, res) => {
   try {
-    const { email, password, name } = req.body;
-    const createUser = new User({ email, password, name });
+    const { email, password, name, subscribed } = req.body;
+    const createUser = new User({ email, password, name, subscribed });
     await createUser.save();
     const token = await createUser.generateAuthToken();
     responseHandler(res, 201, {

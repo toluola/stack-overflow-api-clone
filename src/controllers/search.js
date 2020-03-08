@@ -21,7 +21,7 @@ const searchAll = async (req, res) => {
         });
       }
 
-      responseHandler(res, 200, {
+      responseHandler(res, 404, {
         status: "success",
         message: "No Question Found"
       });
@@ -43,7 +43,7 @@ const searchAll = async (req, res) => {
         });
       }
 
-      responseHandler(res, 200, {
+      responseHandler(res, 404, {
         status: "success",
         message: "No Answer Found"
       });
@@ -64,7 +64,7 @@ const searchAll = async (req, res) => {
           data: searchProfile
         });
       }
-      responseHandler(res, 200, {
+      responseHandler(res, 404, {
         status: "success",
         message: "No Profile Found"
       });

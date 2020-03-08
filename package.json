@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/toluola/stack-overflow-api-clone#readme",
   "dependencies": {
+    "@babel/polyfill": "^7.8.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -43,7 +44,7 @@
     "mongoose": "^5.9.2",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0",
-    "@babel/polyfill": "^7.8.3"
+    "swagger-ui-express": "^4.1.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",

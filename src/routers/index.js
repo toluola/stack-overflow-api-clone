@@ -13,6 +13,14 @@ import auth from "../middlewares/auth";
 
 const router = Router();
 
+/**
+ * Resource handling base  URL
+ * @name router:/
+ * @function
+ * @memberof module:Express.Router
+ * @returns Response Object
+ */
+
 router.get("/", (req, res) => {
   res.status(200).json({
     message: "welcome to the base URL"

@@ -10,3 +10,11 @@ export const responseHandler = (res, code, payload) =>
   res.status(code).json({
     ...payload
   });
+
+export const formatResponse = response => {
+  response.map(response => {
+    response._id;
+    response.body;
+    response.voteCount;
+  });
+};

@@ -25,7 +25,7 @@ const Answer = mongoose.model("Answer", answerSchema);
 
 Answer.ensureIndexes(function(err) {
   if (err) console.log(err);
-  else console.log("create question index successfully");
+  else console.log("create answer index successfully");
 });
 
 module.exports = Answer;

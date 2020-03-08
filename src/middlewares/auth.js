@@ -14,7 +14,7 @@ const auth = async (req, res, next) => {
   try {
     const checkToken = req.headers.authorization;
     if (!checkToken) {
-      responseHandler(res, 401, {
+      return responseHandler(res, 401, {
         status: "error",
         message: [{ errorMessage: "Token is missing" }]
       });
@@ -26,7 +26,7 @@ const auth = async (req, res, next) => {
       "tokens.token": token
     }).select("-password");
     if (!user) {
-      responseHandler(res, 404, {
+      return responseHandler(res, 404, {
         status: "error",
         message: [{ errorMessage: "User does not exist" }]
       });
