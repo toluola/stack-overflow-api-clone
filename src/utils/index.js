@@ -1,3 +1,4 @@
+import "@babel/polyfill";
 import Question from "../models/Question";
 
 /**
